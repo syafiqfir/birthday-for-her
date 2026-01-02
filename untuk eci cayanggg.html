@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Sayang ❤️</title>
+
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+
+body{
+  margin:0;
+  background:linear-gradient(135deg,#ffdde1,#ee9ca7);
+  overflow:hidden;
+}
+
+.page{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  padding:20px;
+}
+.page.active{display:flex}
+
+h1,h2,p{color:#fff}
+
+/* ===== CHAT BUTTON ===== */
+.chat-btn{
+  margin-top:30px;
+  padding:14px 38px;
+  font-size:16px;
+  border:none;
+  border-radius:999px;
+  background:#ff5c8a;
+  color:white;
+  cursor:pointer;
+  position:relative;
+  box-shadow:0 8px 20px rgba(255,92,138,.35);
+  transition:.25s;
+}
+.chat-btn::after{
+  content:'';
+  position:absolute;
+  bottom:-8px;
+  left:35px;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:8px solid #ff5c8a;
+}
+.chat-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(255,92,138,.45);
+}
+.chat-btn:active{transform:scale(.96)}
+
+/* ===== PARTY ===== */
+.party{display:inline-block;animation:pop 1.3s infinite}
+@keyframes pop{
+  0%{transform:scale(1)}
+  30%{transform:scale(1.4) rotate(10deg)}
+  60%{transform:scale(.9) rotate(-10deg)}
+  100%{transform:scale(1)}
+}
+
+/* ===== CAKE ===== */
+.cake{position:relative;width:200px;margin:65px 0}
+.layer{
+  height:60px;
+  border-radius:10px;
+  background:#F3A6B8;
+  margin-bottom:3px;
+}
+.layer:nth-child(2){background:#CFE6D6}
+.layer:nth-child(3){background:#D6D4F2}
+
+.candle{
+  position:absolute;
+  top:-40px;
+  left:50%;
+  transform:translateX(-50%);
+  width:10px;
+  height:40px;
+  background:#fff;
+  cursor:pointer;
+}
+.flame{
+  position:absolute;
+  top:-15px;
+  left:50%;
+  transform:translateX(-50%);
+  width:14px;
+  height:14px;
+  background:orange;
+  border-radius:50%;
+  animation:flicker .5s infinite;
+}
+.flame.off{display:none}
+@keyframes flicker{
+  0%{transform:translateX(-50%) scale(1)}
+  50%{transform:translateX(-50%) scale(.8)}
+  100%{transform:translateX(-50%) scale(1)}
+}
+
+/* ===== CONFETTI & LOVE ===== */
+.confetti-container,
+.love-container{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+.confetti{
+  position:absolute;
+  top:-10px;
+  width:10px;
+  height:16px;
+  opacity:.8;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg)}
+}
+.love{
+  position:absolute;
+  bottom:-20px;
+  font-size:22px;
+  animation:floatUp linear infinite;
+}
+@keyframes floatUp{
+  to{transform:translateY(-110vh);opacity:0}
+}
+
+/* ===== CARD ===== */
+.card{
+  background:white;
+  border-radius:40px;
+  padding:35px;
+  width:70%;
+  max-width:1000px;
+  display:flex;
+  align-items:center;
+  gap:40px;
+  box-shadow:0 30px 50px rgba(0,0,0,.25);
+}
+
+.card img{
+  width:340px;
+  border-radius:35px;
+  border:6px solid #ff5f9e;
+}
+
+.card p{
+  color:#333;
+  text-align:left;
+  white-space:pre-line;
+  line-height:1.7;
+}
+
+/* ===== RESPONSIVE HP (KATA TETEP UTUH) ===== */
+@media (max-width:768px){
+
+  h1{font-size:22px}
+
+  .card{
+    flex-direction:column;
+    width:95%;
+    max-width:520px;
+    padding:25px;
+    gap:20px;
+    border-radius:30px;
+  }
+
+  .card img{
+    width:100%;
+    max-width:260px;
+    border-radius:25px;
+  }
+
+  .card p{
+    max-height:55vh;        /* KUNCI UTAMA */
+    overflow-y:auto;        /* SCROLL DALAM CARD */
+    font-size:15px;
+    line-height:1.8;
+    padding-right:5px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <h1>Hai Hai Princess❤️</h1>
+  <h2>Ada sesuatu yang spesial nich</h2>
+  <button class="chat-btn" onclick="nextPage(2)">Klik aku pwiss</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <div class="confetti-container" id="confetti"></div>
+
+  <h1><span class="party">🎉</span> Happy Birthday Sayang<span class="party">🎉</span></h1>
+
+  <div class="cake">
+    <div class="candle" onclick="blowCandle()">
+      <div class="flame" id="flame"></div>
+    </div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+  </div>
+
+  <p>Tiup lilinnya yaa.. 🎤 atau klik lilinnya</p>
+
+  <audio id="music" src="lagu eci.mp3"></audio>
+
+  <button id="toPage3" class="chat-btn" style="display:none" onclick="nextPage(3)">
+    Buka Hadiah 🎁
+  </button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <div class="love-container" id="love"></div>
+
+  <h1>For You 💝</h1>
+  <div class="card">
+    <img src="foto eci.jpeg">
+    <p>
+SELAMAT ULANG TAHUNN CAYANGG!!🤍
+Hari ini bukan cuman bertambahnya umurmu, tapi tentang betapa bersyukurnya aku karena kamu hadir di hidupku.
+
+Jujur, aku nggak pernah nyangka bisa ketemu sama kamu. kamu udah ku anggap rumah yang bikin aku ngerasa aman, tenang, dan diterima apa adanya.
+
+Maaf yaa sayang, aku mungkin belum bisa bikin kata-kata sebaik dan seromantis kamu. aku juga belum bisa ngasih sesuatu yang se wah itu, atau mengekspresikan perasaanku dengan cara yang paling indah... tapi, semoga lewat kata-kata sederhana ini, kamu bisa ngerasain betapa tulusnya aku sama kamu, betapa berharganya kamu di hidup aku, dan betapa aku bener-bener bersyukur punya kamu.
+
+Aku juga mau bilang terimakasih…
+terimakasih karena kamu udah bertahan sejauh ini...terimakasih karena di balik senyum kamu, ada banyak hal yang sudah kamu lewatin, banyak perjuangan yang mungkin nggak semua orang tau. kamu kuat banget sayang..bahkan di saat kamu ngerasa lelah. kamu hebat, bahkan di saat kamu ngerasa ragu sama diri sendiri.. dan aku juga banggaaa banget sama kamu, dengan segala proses yang darderdor yang sudah kamu jalani di tahun-tahun sebelumnya.
+
+Semoga di usia yang baru ini, langkah mu selalu dikuatkan yaa.. hatimu selalu terjaga.. dan apa pun yang kamu kejar pelan-pelan mendekat ke kamu.. semoga kamu selalu diberi kesehatan, ketenangan, dan kebahagiaan yang tulus.. bukan cuma dari orang lain, tapi juga dari diri kamu sendiri..
+
+
+Terimakasih yaa sayangg.. terimakasih karena kamu tetap milih bertahan, tetap peduli, dan tetap sayang meski nggak selalu mudah. Kamu nggak cuma jadi pasangan, tapi juga jadi teman, tempat pulang, dan alasan aku pengen jadi versi diri yang lebih baik.
+
+Di hari yang spesial ini, aku cuma pengen kamu tau:
+kamu berharga, kamu layak dicintai sepenuh hati, dan kamu pantas dapet semua hal baik di dunia.
+
+Selamat 21+ princess ku!!
+Terimakasih sudah lahir ke dunia ini…🤍
+    </p>
+  </div>
+</div>
+
+<script>
+function nextPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page'+n).classList.add('active');
+
+  if(n===2){
+    startConfetti();
+    const music=document.getElementById('music');
+    music.volume=0;
+    music.play();
+    fadeIn(music);
+    startMic();
+  }
+  if(n===3) startLove();
+}
+
+function fadeIn(audio){
+  let v=0;
+  const i=setInterval(()=>{
+    if(v<1){v+=0.05;audio.volume=v}
+    else clearInterval(i);
+  },150);
+}
+
+function blowCandle(){
+  document.getElementById('flame').classList.add('off');
+  document.getElementById('toPage3').style.display='inline-block';
+}
+
+function startConfetti(){
+  const c=document.getElementById('confetti');
+  for(let i=0;i<60;i++){
+    const e=document.createElement('div');
+    e.className='confetti';
+    e.style.left=Math.random()*100+'%';
+    e.style.animationDuration=2+Math.random()*3+'s';
+    e.style.background=`hsl(${Math.random()*360},100%,70%)`;
+    c.appendChild(e);
+    setTimeout(()=>e.remove(),6000);
+  }
+}
+
+function startLove(){
+  const l=document.getElementById('love');
+  setInterval(()=>{
+    const e=document.createElement('div');
+    e.className='love';
+    e.innerHTML='❤️';
+    e.style.left=Math.random()*100+'%';
+    e.style.animationDuration=4+Math.random()*3+'s';
+    l.appendChild(e);
+    setTimeout(()=>e.remove(),7000);
+  },350);
+}
+
+function startMic(){
+  navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+    const ctx=new AudioContext();
+    const mic=ctx.createMediaStreamSource(stream);
+    const an=ctx.createAnalyser();
+    mic.connect(an);
+    const data=new Uint8Array(an.fftSize);
+    function detect(){
+      an.getByteTimeDomainData(data);
+      let sum=0;
+      data.forEach(v=>sum+=Math.abs(v-128));
+      if(sum>3000) blowCandle();
+      else requestAnimationFrame(detect);
+    }
+    detect();
+  });
+}
+</script>
+
+</body>
+</html>
